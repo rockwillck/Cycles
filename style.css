@@ -334,3 +334,21 @@ input {
 .trendstat {
     padding: 15px;
 }
+
+#hint {
+    position: fixed;
+    max-width: 300px;
+    text-align: center;
+    background: linear-gradient(90deg, rgb(10, 10, 20) 50%, rgba(255, 255, 255, 0.1) 50%);
+    background-size: 200%;
+    background-position: left;
+    backdrop-filter: blur(10vmin);
+    padding: 5px;
+    border-radius: 10px;
+    bottom: 10px;
+    left: 50%;
+    translate: -50% 0;
+    scale: 0;
+    height: 0;
+    transition: scale 0.2s, height 0.2s, background-position 10s;
+}
