@@ -80,7 +80,7 @@ function renderPopup(cyc) {
             let e = cyc.events[index]
             let bar = document.createElement("button")
             bar.className = "bar"
-            bar.style.height = `${(e.intensity - min)/(max-min)*100}%`
+            bar.style.height = `${max(5,(e.intensity - min)/(max-min)*100)}%`
             document.getElementById("barchart").appendChild(bar)
             bar.onclick = () => {
                 cyc.removeEvent(index)
