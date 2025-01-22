@@ -80,7 +80,6 @@ function renderPopup(cyc) {
             let e = cyc.events[index]
             let bar = document.createElement("button")
             bar.className = "bar"
-            console.log((e.intensity - min)/(max-min))
             bar.style.height = `${(e.intensity - min)/(max-min)*100}%`
             document.getElementById("barchart").appendChild(bar)
             bar.onclick = () => {
@@ -103,7 +102,7 @@ function renderPopup(cyc) {
 
     document.getElementById("pottrends").innerText = document.getElementById("allTrends").className.includes("formalive") ? document.getElementById("pottrends").innerText : `${cyc.events.length > 0 ? getNumberOfTrends(cyc) : "0"} potential trends found`
 
-    if (cyc.events.length > 0 && cyc.group.cycles.length > 1) {
+    if (cyc.events.length > 0) {
         let preds = analResults[cyc.group.id].predictions[cyc.id]
         if (preds != undefined) {
             if (preds[0] != undefined) {
