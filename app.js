@@ -102,7 +102,7 @@ function renderPopup(cyc) {
 
     document.getElementById("pottrends").innerText = document.getElementById("allTrends").className.includes("formalive") ? document.getElementById("pottrends").innerText : `${cyc.events.length > 0 ? getNumberOfTrends(cyc) : "0"} potential trends found`
 
-    if (cyc.events.length > 0) {
+    if (cyc.events.length > 1) {
         let preds = analResults[cyc.group.id].predictions[cyc.id]
         if (preds != undefined) {
             if (preds[0] != undefined) {
