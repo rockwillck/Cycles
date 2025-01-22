@@ -238,7 +238,6 @@ select {
 }
 .chart > button {
     flex: 1;
-    min-height: 40px;
     min-width: 30px;
     margin-left: 2px;
     margin-right: 2px;
