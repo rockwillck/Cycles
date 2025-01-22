@@ -1,0 +1,336 @@
+:root {
+    --pwa-top-offset: 0px;
+}
+
+html, body {
+    overscroll-behavior-y: none;
+}
+body {
+    background-color: black;
+    color: white;
+    font-family: Kola, sans-serif;
+}
+@font-face {
+    font-family: Array;
+    src: url(static/Array-Regular.ttf);
+}
+@font-face {
+    font-family: Kola;
+    src: url(static/Kola-Regular.ttf);
+}
+
+.bg, .screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.bg {
+    background-size:100vmax 100vmax;
+    background-position: center;
+    background-image: radial-gradient(40% 40% at 73% 14%, #2EA398FF 19%, #073AFF00 59%),radial-gradient(40% 40% at 96% 70%, #3CCB9EFF 25%, #073AFF00 56%),radial-gradient(40% 40% at 93% 8%, #3796A3FF 25%, #073AFF00 62%),radial-gradient(40% 40% at 63% -1%, #22CFADFF 25%, #073AFF00 62%),radial-gradient(40% 40% at 103% 84%, #3BE1B3FF 25%, #073AFF00 75%),radial-gradient(40% 40% at 97% 96%, #00FFD4FF 25%, #073AFF00 74%),radial-gradient(40% 40% at 81% 79%, #00FFBDFF 25%, #073AFF00 65%),radial-gradient(40% 40% at 2% 59%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 31% 103%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 10% 98%, #098672FF 25%, #073AFF00 68%),radial-gradient(40% 40% at 9% 76%, #3AB989FF 25%, #073AFF00 68%);
+}
+.screen {
+    backdrop-filter: blur(4vmin) brightness(0.5);
+    padding: 30px;
+    box-sizing: border-box;
+    overflow: scroll;
+    padding-top: calc(30px + var(--pwa-top-offset));
+    padding-bottom: 60px;
+}
+.screen::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+    display: none;
+}
+.box, input, select {
+    border: solid 2px rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10vmin) brightness(2);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    color: inherit;
+    text-align: left;    
+    box-sizing: border-box;
+    font-family: inherit;
+}
+.btn {
+    padding: 10px;
+    font-family: inherit;
+    position: fixed;
+    right: 10px;
+    top: calc(30px + var(--pwa-top-offset));
+    z-index: 2;
+    backdrop-filter: brightness(0.8) blur(10vmin);
+}
+
+a {
+    text-decoration: none;
+    font-size: inherit;
+}
+a::after {
+    content: "›";
+    position: absolute;
+    right: 10px;
+}
+a:hover {
+    translate: -5px 0;
+}
+a:active {
+    translate: 5px 0;
+}
+
+button, a {
+    perspective: 800px;
+    transition: 0.2s;
+}
+button:hover {
+    transform: rotate3d(-1, -0.5, 0, 20deg);
+}
+button:active {
+    scale: 0.9;
+}
+
+h1, h2, h3, p {
+    margin: 0;
+    font-weight: 100;
+}
+h1, h2, h3, label {
+    font-family: Array;
+}
+h1 {
+    font-size: 100px;
+    margin: 10px;
+}
+h2 {
+    font-size: 50px;
+}
+h3 {
+    font-size: 40px;
+}
+
+.cycle {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    max-width: 500px;
+    min-width: 300px;
+    flex: 1;    
+    margin: 10px;
+}
+.cycle > span {
+    font-size: 15px;
+    opacity: 0.5;
+}
+.stats {
+    display: flex;
+    width: 100%;
+}
+.statBox {
+    flex: 1;
+    padding: 10px;
+}
+
+#cycles {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.popupOuter {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: backdrop-filter 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding: 20px;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    z-index: -1;
+}
+.popup {
+    flex: 1;
+    border-radius: 10px 10px 0 0;
+    border: solid 2px rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+    translate: 0 100vh;
+    backdrop-filter: saturate(2) blur(4vmin);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    box-sizing: border-box;
+    max-width: min(600px, 100%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    transition: translate 0.3s;
+    height: calc(100% - 40px);
+    overflow: scroll;
+}
+label {
+    margin-top:10px;
+    margin-bottom: 10px;    
+    font-size: 30px;
+}
+input, select, .popup > a {
+    padding: 10px;
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(https://stackoverflow.com/favicon.ico) 96% / 15% no-repeat inherit;
+    position: relative;
+    font-size: inherit;
+}
+.editable {
+    border-bottom: solid 2px rgba(255, 255, 255, 0.3);
+    border-bottom-right-radius: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    margin: 0;
+}
+.buttons {
+    display: flex;
+    width: 100%;
+    margin-top: 15px;
+}
+.buttons > button {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-size: inherit;
+}
+.cancel {
+    margin-right: 5px;
+    background-color: rgba(255, 100, 100, 0.4);
+}
+.save {
+    margin-left: 5px;
+}
+
+.chartCont {
+    display: flex;
+}
+.chartLabel {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    opacity: 0.5;
+}
+.chartLabel > span:nth-of-type(2) {
+    flex: 1;
+    display: flex;
+    align-items: end;
+}
+.chart {
+    flex: 1;
+    display: flex;
+    max-width: 100%;
+    height: 70px;
+    overflow: scroll;
+    scroll-snap-type: x mandatory;
+    align-items: end;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.chart > button {
+    flex: 1;
+    min-height: 40px;
+    min-width: 30px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: #00FFBDFF;
+    border: none;
+    border-radius: 10px;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+}
+.bar:hover {
+    opacity: 0.6;
+    transform: none;
+}
+.chart::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+    display: none;
+}
+.chartBottom {
+    width: 100%;
+    display: flex;
+    padding-left: 20px;
+    box-sizing: border-box;
+    opacity: 0.5;
+}
+#dmax {
+    flex: 1;
+    text-align: right;
+}
+
+.logp {
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: inherit;
+}
+
+input {
+    font-size: inherit;
+}
+
+.formset {
+    border: solid 2px rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
+    border-radius: 10px;
+    position: relative;
+    scale: 1 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    transition: 0.2s;
+}
+.formalive {
+    margin-top: 50px;
+    padding: 20px;
+    scale: 1 1;
+    height: fit-content;
+}
+.formset::before {
+    position: absolute;
+    top: -32px;
+    left: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    height: 30px;
+    border-radius: 10px 10px 0 0;
+    padding: 5px;
+    box-sizing: border-box;
+}
+#addlog::before { 
+    content: "New Log";
+}
+#allTrends::before {
+    content: "Trends";
+}
+#addGroup::before {
+    content: "Group";
+}
+.formset > div:not(.buttons) {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.formset > div > label {
+    margin-top: 0;
+}
+.formset > button {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: rgba(100, 255, 255, 0.2);
+}
+
+.trendstat {
+    padding: 15px;
+}

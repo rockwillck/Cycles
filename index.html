@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Cycles</title>
+	<!-- <meta name="viewport" content="width=device-width,initial-scale=1" /> -->
+	<meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover, user-scalable=no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="description" content="Body awareness, elevated." />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="icon" href="icon.png">
+	<link rel="manifest" href="manifest.json">
+	<meta name="apple-mobile-web-app-status-bar" content="#098672FF" />
+	<meta name="theme-color" content="#098672FF" />
+</head>
+<body>
+	<div class="bg"></div>
+	<button class="box btn" onclick="addCycle()">Add Cycle</button>
+	<div class="screen">
+		<h1>Cycles</h1>
+		<div id="cycles">
+		</div>
+	</div>
+	<div class="popupOuter" id="poo">
+		<div class="popup" id="po">
+			<h2 id="name" contenteditable class="editable" oninput="changeName(this)">New Cycle</h2>
+			<label for="group">Group</label>
+			<select id="group" onchange="changeGroup(this.value)">
+				<option selected>Group 1</option>
+			</select>
+			<div class="buttons">
+				<button class="cancel box" onclick="editGroup()">Edit Group</button>
+				<button class="save box" onclick="newGroup()">New Group</button>
+			</div>
+			<div class="buttons">
+				<button class="cancel box" onclick="deleteGroup()">Delete Group</button>
+			</div>
+			<div class="formset" id="addGroup">
+				<div>
+					<label for="gn">Group Name</label>
+					<input type="text" id="gn">
+				</div>
+				<div class="buttons">
+					<button class="cancel box" id="cng" onclick="cancelNewGroup()">Cancel</button>
+					<button class="save box" id="sng" onclick="registerNewGroup()">Save</button>
+				</div>
+			</div>
+			<label>Average <label contenteditable class="editable" onblur="changeILabel(this)" id="avglabel">Intensity</label></label>
+			<p id="avgintensity">N/A</p>
+			<label>Logs</label>
+			<span>Tap to delete log</span>
+			<div class="chartCont">
+				<div class="chartLabel">
+					<span id="cmax">0</span>
+					<span id="cmin">0</span>
+				</div>
+				<div class="chart" id="barchart">
+				</div>
+			</div>
+			<div class="chartBottom">
+				<span id="dmin">1/1/2032</span>
+				<span id="dmax">1/1/2025</span>
+			</div>
+			<button class="logp box" onclick="activateNewLogger()">Add Log</button>
+			<div class="formset" id="addlog">
+				<div>
+					<label for="time">Date</label>
+					<input type="datetime-local" id="time">
+				</div>
+				<div>
+					<label for="val" id="formvallabel">Intensity</label>
+					<input type="number" id="val">
+				</div>
+				<div class="buttons">
+					<button class="cancel box" onclick="cancelNewLog()">Cancel</button>
+					<button class="save box" onclick="registerNewLog()">Save</button>
+				</div>
+			</div>
+			<label>Analysis</label>				
+			<button class="logp box" onclick="activateTrends()" id="pottrends">x potential trends found</button>
+			<div class="formset" id="allTrends">
+			</div>
+			<label>Prediction</label>	
+			<p id="datepredict">Date: Not Enough Data</p>
+			<p id="intensitypredict">Intensity: Not Enough Data</p>
+			<div class="buttons">
+				<button class="cancel box" onclick="deleteCycle()">Delete Cycle</button>
+				<button class="box" onclick="lowerPopup()">Close</button>
+			</div>
+		</div>
+	</div>
+	<script src="sw.js"></script>
+	<script src="mods/matrix.js"></script>
+	<script src="mods/analyze.js"></script>
+	<script src="mods/structs.js"></script>
+	<script src="app.js"></script>
+</body>
+</html>
