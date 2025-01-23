@@ -8,15 +8,15 @@ html, body {
 body {
     background-color: black;
     color: white;
-    font-family: Kola, sans-serif;
+    font-family: CabinetGrotesk, sans-serif;
 }
 @font-face {
     font-family: Array;
     src: url(static/Array-Regular.ttf);
 }
 @font-face {
-    font-family: Kola;
-    src: url(static/Kola-Regular.ttf);
+    font-family: CabinetGrotesk;
+    src: url(static/CabinetGrotesk-Variable.ttf);
 }
 
 .bg, .screen {
@@ -213,6 +213,7 @@ select {
 
 .chartCont {
     display: flex;
+    margin-top: 5px;
 }
 .chartLabel {
     display: flex;

@@ -12,7 +12,7 @@ self.addEventListener('install', event => {
                 '/mods/matrix.js',
                 '/mods/structs.js',
                 '/static/Array-Regular.ttf',
-                '/static/Kola-Regular.ttf'
+                '/static/CabinetGrotesk-Variable.ttf'
             ]);
         })
     );

@@ -199,11 +199,14 @@ class Analyze {
                 }
             }
         }
-        let total = upCount + downCount + equalCount
-        if (Math.max(upCount, downCount, equalCount) == upCount) {
-            return upCount/(upCount+downCount)
-        } else if (Math.max(upCount, downCount, equalCount) == downCount) {
-            return -downCount/(upCount+downCount)
+        if (upCount+downCount == 0) {
+            return 0
+        } else {
+            if (Math.max(upCount, downCount, equalCount) == upCount) {
+                return upCount/(upCount+downCount)
+            } else if (Math.max(upCount, downCount, equalCount) == downCount) {
+                return -downCount/(upCount+downCount)
+            }
         }
         return 0
     }
