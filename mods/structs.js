@@ -42,7 +42,7 @@ class Cycle {
 
 class Event {
     constructor(date, intensity) {
-        this.date = Math.round(date.getTime() / 3600000)
+        this.date = Math.round(date.getTime() / 60000)
         this.intensity = intensity
     }
     toString() {

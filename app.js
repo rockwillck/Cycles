@@ -90,23 +90,25 @@ function renderPopup(cyc) {
         }
         document.getElementById("cmax").innerText = max
         document.getElementById("cmin").innerText = min
-        let minDate = new Date(cyc.events[0].date*3600000)
-        let maxDate = new Date(cyc.events[cyc.events.length - 1].date*3600000)
+        let minDate = new Date(cyc.events[0].date*60000)
+        let maxDate = new Date(cyc.events[cyc.events.length - 1].date*60000)
         document.getElementById("dmin").innerText = `${minDate.getMonth() + 1}.${minDate.getDate()}.${minDate.getFullYear()}`
         document.getElementById("dmax").innerText = `${maxDate.getMonth() + 1}.${maxDate.getDate()}.${maxDate.getFullYear()}`
     } else {
         document.getElementById("cmax").innerText = 0
         document.getElementById("cmin").innerText = 0
+        document.getElementById("dmin").innerText = ``
+        document.getElementById("dmax").innerText = ``
         document.getElementById("barchart").innerHTML = `<button class="bar" style="width:100%; height:100%; background-color:rgba(0, 0, 0, 0.2)"></button>`
     }
 
-    document.getElementById("pottrends").innerText = document.getElementById("allTrends").className.includes("formalive") ? document.getElementById("pottrends").innerText : `${cyc.events.length > 0 ? getNumberOfTrends(cyc) : "0"} potential trends found`
+    document.getElementById("pottrends").innerText = document.getElementById("allTrends").className.includes("formalive") ? document.getElementById("pottrends").innerText : `${cyc.events.length > 0 ? getNumberOfTrends(cyc) : "0"} potential trend${getNumberOfTrends(cyc) == 1 ? "" : "s"} found`
 
     if (cyc.events.length > 1) {
         let preds = analResults[cyc.group.id].predictions[cyc.id]
         if (preds != undefined) {
             if (preds[0] != undefined) {
-                let d = new Date((cyc.events[cyc.events.length - 1].date + preds[0])*60*60*1000)
+                let d = new Date((cyc.events[cyc.events.length - 1].date + preds[0])*60*1000)
                 document.getElementById("datepredict").innerText = `Date: ${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][d.getDay()]}, ${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} at ${d.getHours() == 0 ? 12 : (d.getHours() % 12)} ${d.getHours() < 12 ? "AM" : "PM"}`
             } else {
                 document.getElementById("datepredict").innerText = "Date: Not enough data"
@@ -373,7 +375,7 @@ function render() {
         addStat(cycle.events.length > 0 ? Math.round(Analyze.extractIntensities(cycle.events).reduce((a, b) => a + b) / cycle.events.length*10)/10 : "?", "avg")
         if (cycle.events.length > 0) {
             let foundtrends = getNumberOfTrends(cycle)
-            addStat(foundtrends, "trends")
+            addStat(foundtrends, `trend${foundtrends == 1 ? "" : "s"}`)
         } else {
             addStat("?", "trends")
         }
