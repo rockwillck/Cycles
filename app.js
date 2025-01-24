@@ -83,9 +83,11 @@ function renderPopup(cyc) {
             bar.style.height = `${max == min ? 100 : (e.intensity - min)/(max-min)*100}%`
             document.getElementById("barchart").appendChild(bar)
             bar.onclick = () => {
-                cyc.removeEvent(index)
-                render()
-                renderPopup(currentCycle)
+                if (confirm("Delete log?")) {
+                    cyc.removeEvent(index)
+                    render()
+                    renderPopup(currentCycle)
+                }
             }
         }
         document.getElementById("cmax").innerText = max
