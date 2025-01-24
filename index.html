@@ -28,8 +28,17 @@
 	<meta property="twitter:image" content="https://i.imgur.com/iiDjYmG.png" />
 </head>
 <body>
+	<div class="icons">
+		<button class="icon box" onclick="toggleHelp()">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor"><path d="M424-320q0-81 14.5-116.5T500-514q41-36 62.5-62.5T584-637q0-41-27.5-68T480-732q-51 0-77.5 31T365-638l-103-44q21-64 77-111t141-47q105 0 161.5 58.5T698-641q0 50-21.5 85.5T609-475q-49 47-59.5 71.5T539-320H424Zm56 240q-33 0-56.5-23.5T400-160q0-33 23.5-56.5T480-240q33 0 56.5 23.5T560-160q0 33-23.5 56.5T480-80Z"/></svg>
+		</button>
+		<div class="inbetween"></div>
+		<button class="icon box" onclick="toggleSettings()">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+		</button>
+	</div>
 	<div class="bg"></div>
-	<button class="box btn" onclick="addCycle()">Add Cycle</button>
+	<button class="box btn" id="tut1" onclick="addCycle()">Add Cycle</button>
 	<div class="screen">
 		<h1>Cycles</h1>
 		<div id="cycles">
@@ -43,7 +52,7 @@
 				<option selected>Group 1</option>
 			</select>
 			<div class="buttons">
-				<button class="cancel box" onclick="editGroup()">Edit Group</button>
+				<button class="save box" onclick="editGroup()">Edit Group</button>
 				<button class="save box" onclick="newGroup()">New Group</button>
 			</div>
 			<div class="buttons">
@@ -75,7 +84,7 @@
 				<span id="dmin">1/1/2032</span>
 				<span id="dmax">1/1/2025</span>
 			</div>
-			<button class="logp box" onclick="activateNewLogger()">Add Log</button>
+			<button class="logp box" onclick="activateNewLogger()" id="tut2">Add Log</button>
 			<div class="formset" id="addlog">
 				<div>
 					<label for="time">Date</label>
@@ -87,7 +96,7 @@
 				</div>
 				<div class="buttons">
 					<button class="cancel box" onclick="cancelNewLog()">Cancel</button>
-					<button class="save box" onclick="registerNewLog()">Save</button>
+					<button class="save box" onclick="registerNewLog()" id="tut3">Save</button>
 				</div>
 			</div>
 			<label>Analysis</label>				
@@ -99,13 +108,33 @@
 			<p id="intensitypredict">Intensity: Not Enough Data</p>
 			<div class="buttons">
 				<button class="cancel box" onclick="deleteCycle()">Delete Cycle</button>
-				<button class="box" onclick="lowerPopup()">Close</button>
+				<button class="box" onclick="lowerPopup()" id="tutlast">Close</button>
 			</div>
 		</div>
 	</div>
 	<div id="hint">
 		Try pressing Share > Add to Home Screen to use this site as an app!
 	</div>
+	<div id="settings" class="box">
+		<div class="inner">
+			<h2>Settings</h2>
+			<div class="pair">
+				<label>Chill Mode</label>
+				<label class="switch">
+					<input type="checkbox" oninput="toggleChill(this.checked)" id="chilltoggle">
+					<span class="slider round"></span>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div id="help" class="box">
+		<div class="inner">
+			<h2>Help</h2>
+			<button class="box" onclick="tutorial()">Run tutorial</button>
+			<button class="box" onclick="toggleSettings()">Open Settings</button>
+		</div>
+	</div>
+	<div id="tutText" hidden>First, click Add Cycle.</div>
 	<script src="sw.js"></script>
 	<script src="mods/matrix.js"></script>
 	<script src="mods/analyze.js"></script>

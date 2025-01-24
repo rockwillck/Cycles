@@ -29,7 +29,10 @@ body {
 .bg {
     background-size:100vmax 100vmax;
     background-position: center;
-    background-image: radial-gradient(40% 40% at 73% 14%, #2EA398FF 19%, #073AFF00 59%),radial-gradient(40% 40% at 96% 70%, #3CCB9EFF 25%, #073AFF00 56%),radial-gradient(40% 40% at 93% 8%, #3796A3FF 25%, #073AFF00 62%),radial-gradient(40% 40% at 63% -1%, #22CFADFF 25%, #073AFF00 62%),radial-gradient(40% 40% at 103% 84%, #3BE1B3FF 25%, #073AFF00 75%),radial-gradient(40% 40% at 97% 96%, #00FFD4FF 25%, #073AFF00 74%),radial-gradient(40% 40% at 81% 79%, #00FFBDFF 25%, #073AFF00 65%),radial-gradient(40% 40% at 2% 59%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 31% 103%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 10% 98%, #098672FF 25%, #073AFF00 68%),radial-gradient(40% 40% at 9% 76%, #3AB989FF 25%, #073AFF00 68%);
+    background-image: radial-gradient(40% 40% at 73% 14%, rgb(229, 27, 97) 19%, #073AFF00 59%),radial-gradient(40% 40% at 96% 70%, rgb(252, 29, 185) 25%, #073AFF00 56%),radial-gradient(40% 40% at 93% 8%, rgb(219, 75, 161) 25%, #073AFF00 62%),radial-gradient(40% 40% at 63% -1%, rgb(245, 16, 214) 25%, #073AFF00 62%),radial-gradient(40% 40% at 103% 84%, rgb(225, 59, 197) 25%, #073AFF00 75%),radial-gradient(40% 40% at 97% 96%, rgb(255, 0, 195) 25%, #073AFF00 74%),radial-gradient(40% 40% at 81% 79%, rgb(255, 0, 102) 25%, #073AFF00 65%),radial-gradient(40% 40% at 2% 59%, rgb(139, 23, 110) 25%, #073AFF00 70%),radial-gradient(40% 40% at 31% 103%, rgb(139, 23, 102) 25%, #073AFF00 70%),radial-gradient(40% 40% at 10% 98%, rgb(134, 9, 61) 25%, #073AFF00 68%),radial-gradient(40% 40% at 9% 76%, rgb(185, 58, 185) 25%, #073AFF00 68%);
+}
+.chillbg {
+    background-image: radial-gradient(40% 40% at 73% 14%, #2EA398FF 19%, #073AFF00 59%),radial-gradient(40% 40% at 96% 70%, #3CCB9EFF 25%, #073AFF00 56%),radial-gradient(40% 40% at 93% 8%, #3796A3FF 25%, #073AFF00 62%),radial-gradient(40% 40% at 63% -1%, #22CFADFF 25%, #073AFF00 62%),radial-gradient(40% 40% at 103% 84%, #3BE1B3FF 25%, #073AFF00 75%),radial-gradient(40% 40% at 97% 96%, #00FFD4FF 25%, #073AFF00 74%),radial-gradient(40% 40% at 81% 79%, #00FFBDFF 25%, #073AFF00 65%),radial-gradient(40% 40% at 2% 59%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 31% 103%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 10% 98%, #098672FF 25%, #073AFF00 68%),radial-gradient(40% 40% at 9% 76%, #3AB989FF 25%, #073AFF00 68%);;
 }
 .screen {
     backdrop-filter: blur(4vmin) brightness(0.5);
@@ -202,13 +205,13 @@ select {
     padding: 10px;
     text-align: center;
     font-size: inherit;
+    margin-right: 10px;
 }
 .cancel {
-    margin-right: 5px;
-    background-color: rgba(255, 100, 100, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
 }
-.save {
-    margin-left: 5px;
+.buttons > button:last-child {
+    margin-right: 0;
 }
 
 .chartCont {
@@ -243,11 +246,14 @@ select {
     min-width: 30px;
     margin-left: 2px;
     margin-right: 2px;
-    background-color: #00FFBDFF;
+    background-color: rgb(214, 36, 99);
     border: none;
     border-radius: 10px;
     scroll-snap-align: start;
     box-sizing: border-box;
+}
+.chillchart > button {
+    background-color: #00FFBDFF;
 }
 .bar:hover {
     opacity: 0.6;
@@ -352,4 +358,140 @@ input {
     scale: 0;
     height: 0;
     transition: scale 0.2s, height 0.2s, background-position 10s;
+}
+
+.icons {
+    position: fixed;
+    display: flex;
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    padding-bottom: 40px;
+    box-sizing: border-box;
+}
+.inbetween {
+    flex: 1;
+}
+.icon {
+    width: 50px;
+    height: 50px;
+    color: white;
+}
+.icon > svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: 50%;
+    height: 50%;
+}
+
+#settings, #help {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 90vmin;
+    z-index: 3;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    scale: 0;
+    height: 0;
+}
+.showingPanel {
+    scale: 1 !important;
+    height: 90vmin !important;
+}
+.inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.inner > button {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    margin-top: 10px;
+    display: block;
+}
+.pair {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pair > label:not(.switch) {
+    margin-right: 50px;
+}
+
+.switch {
+    position: relative;
+    display: block;
+    width: 50px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(214, 36, 99);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2EA398FF;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 100vmin;
+}
+
+.slider.round:before {
+    border-radius: 100vmin;
+}
+
+#tutText {
+    position: fixed;
+    z-index: 5;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    background-color: black;
+    padding: 10px;
+    max-width: 90%;
 }

@@ -336,6 +336,7 @@ function getFromStorage() {
     } else {
         order = [...cycles.entries()].map(x => x[0])
         new Group("Group 1")
+        toggleHelp()
     }
 }
 
@@ -392,6 +393,11 @@ window.addEventListener("load", () => {
     getFromStorage()
     render()
     
+    if (localStorage.getItem("chill") == "t") {
+        document.getElementById("chilltoggle").checked = true
+        toggleChill(true)
+    }
+
     if (window.matchMedia('(display-mode: standalone)').matches) {
         document.documentElement.style.setProperty('--pwa-top-offset', '30px');
     } else if (window.mobileAndTabletCheck()) {
@@ -431,9 +437,14 @@ container.addEventListener("dragover", (e) => {
     }
 });
 
+var currentTouchId
+var touchLength = 0
 container.addEventListener("touchstart", (e) => {
     const touch = e.touches[0];
     const target = e.target;
+    currentTouchId = setInterval(() => {
+        touchLength++
+    }, 10)
     if (target.classList.contains("cycle")) {
         draggedElement = target;
         touchStartX = touch.clientX;
@@ -442,13 +453,15 @@ container.addEventListener("touchstart", (e) => {
 });
 
 container.addEventListener("touchmove", (e) => {
-    e.preventDefault(); // Prevent scrolling
-    const touch = e.touches[0];
-    const afterElement = getDragAfterElement(container, touch.clientX, touch.clientY);
-    if (afterElement == null) {
-        container.appendChild(draggedElement);
-    } else {
-        container.insertBefore(draggedElement, afterElement);
+    if (touchLength > 20) {
+        e.preventDefault(); // Prevent scrolling
+        const touch = e.touches[0];
+        const afterElement = getDragAfterElement(container, touch.clientX, touch.clientY);
+        if (afterElement == null) {
+            container.appendChild(draggedElement);
+        } else {
+            container.insertBefore(draggedElement, afterElement);
+        }
     }
 });
 
@@ -458,6 +471,9 @@ container.addEventListener("touchend", () => {
     }
     order = [...document.getElementById("cycles").children].map(x => x.dataset.id)
     putToStorage()
+
+    clearInterval(currentTouchId)
+    touchLength = 0
 });
   
 
@@ -476,4 +492,88 @@ function getDragAfterElement(container, x, y) {
         }
         return closest;
       }, { offsetX: Number.POSITIVE_INFINITY }).element;
+}
+
+function toggleSettings() {
+    let ll = document.getElementById("settings").classList
+    if (ll.contains("showingPanel")) {
+        ll.remove("showingPanel")
+    } else {
+        for (let x of document.getElementsByClassName("showingPanel")) {
+            x.classList.remove("showingPanel")
+        }
+        ll.add("showingPanel")
+    }
+}
+function toggleHelp() {
+    let ll = document.getElementById("help").classList
+    if (ll.contains("showingPanel")) {
+        ll.remove("showingPanel")
+    } else {
+        for (let x of document.getElementsByClassName("showingPanel")) {
+            x.classList.remove("showingPanel")
+        }
+        ll.add("showingPanel")
+    }
+}
+function toggleChill(x) {
+    if (x) {
+        document.getElementsByClassName("bg")[0].classList.add("chillbg")
+        document.getElementsByClassName("chart")[0].classList.add("chillchart")
+    } else {
+        document.getElementsByClassName("bg")[0].classList.remove("chillbg")
+        document.getElementsByClassName("chart")[0].classList.remove("chillchart")
+    }
+    localStorage.setItem("chill", x ? "t" : "f")
+}
+
+function tutorial() {
+    for (let x of document.getElementsByClassName("showingPanel")) {
+        x.classList.remove("showingPanel")
+    }
+    let disabledBtns = []
+    document.getElementById("tutText").hidden = false
+    document.getElementById("tutText").innerText = "First, click Add Cycle."
+    for (let b of document.getElementsByTagName("button")) {
+        if (b.id != "tut1") {
+            if (b.disabled == false) {
+                disabledBtns.push(b)
+            }
+            b.disabled = true
+        } else {
+            b.addEventListener("click", () => {
+                b.disabled = true
+                document.getElementById("tutText").innerText = "Tap on where it says New Cycle and give it a name. Maybe 'Coffee'?"
+                document.getElementById("name").addEventListener("blur", () => {
+                    document.getElementById("tutText").innerText = "Choose a group. We only look for relationships between cycles if they're in the same group.\n\nThen, tap on the underlined part of Average Intensity."
+                    document.getElementById("avglabel").addEventListener("focusin", () => {
+                        document.getElementById("tutText").innerText = "You can edit this to be whatever you want. Since this cycle is for coffee, maybe Quantity?"
+                        document.getElementById("avglabel").addEventListener("blur", () => {  
+                            document.getElementById("tutText").innerText = "Great! Now tap Add Log to log your first cup of coffee."
+                            document.getElementById("tut2").disabled = false
+                            document.getElementById("tut2").addEventListener("click", () => {
+                                document.getElementById("tutText").innerText = "For now, we'll just go with what's already there. Tap Save."
+                                document.getElementById("tut2").disabled = true
+                                document.getElementById("tut3").disabled = false
+                                document.getElementById("tut3").addEventListener("click", () => {
+                                    document.getElementById("tutText").innerText = "Great! That pink rectangle is a bar. When you add more logs, more bars will show up in the chart. You can tap the rectangle to delete a log. For now, tap below where it says X potential trends found."
+                                    document.getElementById("pottrends").disabled = false
+                                    document.getElementById("pottrends").addEventListener("click", () => {
+                                        document.getElementById("tutText").innerText = "Once the app finds some relationships, they'll show up here. The app will also make predictions below, where it says Prediction.\n\nThanks for taking part in this tutorial! Tap the Close button below Prediction to finish."
+                                        document.getElementById("tutlast").disabled = false
+                                        document.getElementById("tutlast").addEventListener("click", () => {
+                                            for (let btn of disabledBtns) {
+                                                btn.disabled = false
+                                                document.getElementById("tutText").hidden = true
+                                            }
+                                        }, { once: true })
+                                    }, { once: true })
+                                }, { once: true })
+                            }, { once: true })
+                        }, { once: true })
+                    }, { once: true })
+                }, { once: true })
+            }, { once: true })
+        }
+    }
 }
