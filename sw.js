@@ -28,17 +28,16 @@ self.addEventListener('fetch', event => {
     );
 });
 
-self.addEventListener('activate', event => {
-// Remove old caches
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    (async () => {
-      const keys = await caches.keys();
-      return keys.map(async (cache) => {
-        if(cache !== cacheName) {
-          console.log('Service Worker: Removing old cache: '+cache);
-          return await caches.delete(cache);
-        }
-      })
-    })()
-  )
-})
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cn) => {
+          if (cn != cacheName) {
+            return caches.delete(cn);
+          }
+        }),
+      );
+    }),
+  );
+});
