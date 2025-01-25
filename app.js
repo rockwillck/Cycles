@@ -490,7 +490,11 @@ function getDragAfterElement(container, x, y) {
 }
 
 function toggleSettings() {
-    document.getElementById("cachen").innerText = cacheName
+    try {
+        document.getElementById("cachen").innerText = cacheName
+    } catch (e) {
+        
+    }
     let ll = document.getElementById("settings").classList
     if (ll.contains("showingPanel")) {
         ll.remove("showingPanel")
