@@ -382,7 +382,7 @@ function render() {
     putToStorage()
 }
 window.addEventListener("load", () => {
-    if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.location.href.endsWith("?try")) {
         getFromStorage()
         render()
         
