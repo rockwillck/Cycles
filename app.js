@@ -493,7 +493,7 @@ function toggleSettings() {
     try {
         document.getElementById("cachen").innerText = cacheName
     } catch (e) {
-        
+        document.getElementById("cachen").innerText = "offline"
     }
     let ll = document.getElementById("settings").classList
     if (ll.contains("showingPanel")) {
