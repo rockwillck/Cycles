@@ -1,10 +1,13 @@
-const cacheName = 'v2.9';
+const cacheName = 'v2.10';
 
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(cacheName).then(cache => {
             return cache.addAll([
                 '/',
+                '/index.html' ,
+                '/landing.css' ,
+                '/home.js' ,
                 '/app.html' ,
                 '/style.css' ,
                 '/app.js' ,
