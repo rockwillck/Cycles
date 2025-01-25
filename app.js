@@ -382,26 +382,29 @@ function render() {
     putToStorage()
 }
 window.addEventListener("load", () => {
-    getFromStorage()
-    render()
-    
-    if (localStorage.getItem("chill") == "t") {
-        document.getElementById("chilltoggle").checked = true
-        toggleChill(true)
-    }
-
     if (window.matchMedia('(display-mode: standalone)').matches) {
-        document.documentElement.style.setProperty('--pwa-top-offset', '30px');
-    } else if (window.mobileAndTabletCheck()) {
-        document.getElementById("hint").style.scale = "1"
-        document.getElementById("hint").style.height = "fit-content"
-        document.getElementById("hint").style.backgroundPosition = "right"
-        setTimeout(() => {
-            document.getElementById("hint").style.scale = ""
-            document.getElementById("hint").style.height = ""
-        }, 10000)
-    }
+        getFromStorage()
+        render()
+        
+        if (localStorage.getItem("chill") == "t") {
+            document.getElementById("chilltoggle").checked = true
+            toggleChill(true)
+        }
     
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            document.documentElement.style.setProperty('--pwa-top-offset', '30px');
+        } else if (window.mobileAndTabletCheck()) {
+            document.getElementById("hint").style.scale = "1"
+            document.getElementById("hint").style.height = "fit-content"
+            document.getElementById("hint").style.backgroundPosition = "right"
+            setTimeout(() => {
+                document.getElementById("hint").style.scale = ""
+                document.getElementById("hint").style.height = ""
+            }, 10000)
+        }
+    } else {
+        window.location.href = "landing.html"
+    }
 })
 
 const container = document.getElementById("cycles");

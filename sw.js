@@ -6,9 +6,6 @@ self.addEventListener('install', event => {
             return cache.addAll([
                 '/',
                 '/index.html' ,
-                '/landing.css' ,
-                '/home.js' ,
-                '/app.html' ,
                 '/style.css' ,
                 '/app.js' ,
                 '/register.js' ,
