@@ -1,4 +1,4 @@
-const cacheName = 'v2.6';
+const cacheName = 'v2.8';
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -11,6 +11,10 @@ self.addEventListener('install', event => {
                 '/register.js' ,
                 '/manifest.json',
                 '/icon.png',
+                '/icon512.png',
+                '/icon1174.png',
+                "/splashscreens/ss1.png",
+                "/splashscreens/ss2.png",
                 '/mods/analyze.js',
                 '/mods/matrix.js',
                 '/mods/structs.js',
