@@ -1,7 +1,7 @@
 {
     "name": "Cycles",
     "short_name": "Cycles",
-    "start_url": "app.html",
+    "start_url": "/app.html",
     "display": "standalone",
     "background_color": "#098672FF",
     "description": "Body awareness, elevated.",
