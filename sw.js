@@ -1,14 +1,15 @@
-const cacheName = 'v2.4';
+const cacheName = 'v2.6';
 
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(cacheName).then(cache => {
             return cache.addAll([
                 '/',
-                '/index.html' ,
-                '/styles.css' ,
+                '/app.html' ,
+                '/style.css' ,
                 '/app.js' ,
-                '/manifest.json' ,
+                '/register.js' ,
+                '/manifest.json',
                 '/icon.png',
                 '/mods/analyze.js',
                 '/mods/matrix.js',

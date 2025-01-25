@@ -1,0 +1,115 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.hero, .heroBG {
+	width: 100vw;
+	height: 70vh;  
+	position: absolute;
+    left: 0;
+    top: 0;
+	
+}
+.hero {
+	text-transform: uppercase;
+
+	padding: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+
+
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+    text-align: center;
+    z-index:34;
+}
+.heroBG {
+	background:radial-gradient(circle at 30%, rgb(229, 27, 97), transparent, transparent), radial-gradient(circle at 70%, #2EA398FF, transparent, transparent);
+	background-size: 200vmax 200vmax;
+	background-repeat: no-repeat;
+	background-position: center 100vmax;
+
+	animation: rising 2s forwards;
+    z-index: 1;
+}
+.heroBlurrer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(10vmin) saturate(2);
+    z-index: 2;
+}
+
+h1, h2, h3 {
+	margin: 0;
+}
+h1, sub, .hero > a {
+	opacity: 0;
+	animation: risingText 2s forwards;
+}
+a {
+    margin-top: 20px;
+    color: black;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 100vmin;
+}
+a::after {
+    content: none;
+}
+
+@keyframes rising {
+	0% {
+	}
+	100% {
+		background-position: center calc(100vh - 100vmax);
+	}
+}
+
+@keyframes risingText {
+	0% {
+		opacity: 0;
+		/* translate: 0 2em; */
+	}
+	100% {
+		opacity: 1;
+		/* translate: 0 0; */
+	}
+}
+
+.content {
+	position: absolute;
+	left: 0;
+	top: 70vh;
+	width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    padding-right: 0;
+    box-sizing: border-box;
+    z-index: 4;
+}
+.bento {
+    padding: 30px;
+    border: solid 1px rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+.bento > p {
+    margin-top: 30px;
+}
