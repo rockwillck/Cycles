@@ -114,7 +114,11 @@ function renderPopup(cyc) {
         document.getElementById("intensitypredict").innerText = `${cyc.label}: Not enough data`
     }
 }
-function raisePopup(id) {   
+function raisePopup(id) {
+    for (let x of document.getElementsByClassName("showingPanel")) {
+        x.classList.remove("showingPanel")
+    }
+
     let cyc = cycles.get(id)
     document.getElementById("poo").style.zIndex = 3
     document.getElementById("po").style.translate = "0 0"
