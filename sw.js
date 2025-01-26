@@ -1,4 +1,4 @@
-const cacheName = 'v2.21';
+const cacheName = 'v2.22';
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -32,7 +32,7 @@ self.addEventListener('fetch', (event) => {
     // Open the cache
     event.respondWith(caches.open(cacheName).then((cache) => {
       // Go to the network first
-      return fetch(event.request.url).then((fetchedResponse) => {
+      return fetch(event.request.url, { redirect: 'follow' }).then((fetchedResponse) => {
         cache.put(event.request, fetchedResponse.clone());
 
         return fetchedResponse;
