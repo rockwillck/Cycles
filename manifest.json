@@ -1,11 +1,10 @@
 {
     "name": "Cycles",
     "short_name": "Cycles",
-    "start_url": "/index.html",
+    "start_url": ".",
     "display": "standalone",
     "background_color": "#098672FF",
     "description": "Body awareness, elevated.",
-    "scope": "/index.html",
     "icons": [
         {
             "src": "icon.png",
