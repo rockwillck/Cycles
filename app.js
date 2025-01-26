@@ -417,7 +417,7 @@ window.addEventListener("load", () => {
             }, 10000)
         }
     } else {
-        window.location.href = "landing.html"
+        window.location.href = "landing"
     }
 })
 
