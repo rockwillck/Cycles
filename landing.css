@@ -94,7 +94,6 @@ a::after {
 	top: 70vh;
 	width: 100%;
 	padding: 20px;
-    padding-right: 0;
     box-sizing: border-box;
     z-index: 4;
 	text-align: center;
@@ -112,6 +111,7 @@ a::after {
     flex-wrap: wrap;
 	width: 100%;
 	margin-bottom: 30px;
+	margin-right: -20px;
 }
 .bento {
     padding: 30px;
