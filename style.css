@@ -449,7 +449,7 @@ input {
     justify-content: center;
     align-items: center;
 }
-.inner > button {
+.inner > .box {
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.8);
     margin-top: 10px;
