@@ -64,12 +64,22 @@ function renderPopup(cyc) {
     if (cyc.events.length > 0) {
         let max = Math.ceil(Math.max(...Analyze.extractIntensities(cyc.events)))
         let min = Math.floor(Math.min(...Analyze.extractIntensities(cyc.events)))
+        let diffs = []
+        for (let index = 0; index < cyc.events.length - 1; index++) {
+            diffs.push(cyc.events[index + 1].date - cyc.events[index].date)
+        }
+        let maxDiff = Math.max(...diffs)
         for (let index = 0; index < cyc.events.length; index++) {
             let e = cyc.events[index]
             let bar = document.createElement("button")
             bar.className = "bar"
             bar.style.height = `${max == min ? 100 : (e.intensity - min)/(max-min)*100}%`
             document.getElementById("barchart").appendChild(bar)
+            if (index != cyc.events.length - 1) {
+                let spacer = document.createElement("div")
+                spacer.style.flex = diffs[index]/maxDiff
+                document.getElementById("barchart").appendChild(spacer)
+            }
             bar.onclick = () => {
                 if (confirm("Delete log?")) {
                     cyc.removeEvent(index)

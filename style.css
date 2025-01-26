@@ -270,18 +270,22 @@ select {
     align-items: end;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    padding: 5px;
+    border-radius: 10px;
 }
 .chart > button {
     flex: 1;
     min-height: 5px;
     min-width: 30px;
-    margin-left: 2px;
-    margin-right: 2px;
+    margin-right: 5px;
     background-color: rgb(214, 36, 99);
     border: none;
     border-radius: 10px;
     scroll-snap-align: start;
     box-sizing: border-box;
+}
+.chart > button:last-child {
+    margin-right: 0;
 }
 .chillchart > button {
     background-color: #00FFBDFF;
