@@ -26,7 +26,7 @@ body {
 	flex-direction: column;
 
     text-align: center;
-    z-index:34;
+    z-index:4;
 }
 .heroBG {
 	background:radial-gradient(circle at 30%, rgb(229, 27, 97), transparent, transparent), radial-gradient(circle at 70%, #2EA398FF, transparent, transparent);
@@ -49,6 +49,10 @@ body {
 
 h1, h2, h3 {
 	margin: 0;
+	max-width: 80%;
+}
+h1 {
+	font-size: 80px;
 }
 h1, sub, .hero > a {
 	opacity: 0;
@@ -89,12 +93,25 @@ a::after {
 	left: 0;
 	top: 70vh;
 	width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
+	padding: 20px;
     padding-right: 0;
     box-sizing: border-box;
     z-index: 4;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.content > p {
+	margin: 10px;
+	max-width: 500px;
+}
+.bentobox {
+	display: flex;
+    flex-wrap: wrap;
+	width: 100%;
+	margin-bottom: 30px;
 }
 .bento {
     padding: 30px;
@@ -112,4 +129,10 @@ a::after {
 }
 .bento > p {
     margin-top: 30px;
+}
+small > a {
+	padding: 0;
+	background-color: transparent;
+	color: white;
+	text-decoration: underline;
 }
