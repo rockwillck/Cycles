@@ -1,4 +1,4 @@
-const cacheName = 'v2.20';
+const cacheName = 'v2.21';
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -6,6 +6,7 @@ self.addEventListener('install', event => {
             return cache.addAll([
                 '/',
                 '/index.html' ,
+                '/privacy.html' ,
                 '/style.css' ,
                 '/app.js' ,
                 '/register.js' ,
