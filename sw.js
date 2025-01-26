@@ -1,4 +1,4 @@
-const cacheName = 'v2.22';
+const cacheName = 'v2.23';
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -26,6 +26,25 @@ self.addEventListener('install', event => {
     );
 });
 
+function cleanResponse(response) {
+  const clonedResponse = response.clone();
+
+  // Not all browsers support the Response.body stream, so fall back to reading
+  // the entire body into memory as a blob.
+  const bodyPromise = 'body' in clonedResponse ?
+    Promise.resolve(clonedResponse.body) :
+    clonedResponse.blob();
+
+  return bodyPromise.then((body) => {
+    // new Response() is happy when passed either a stream or a Blob.
+    return new Response(body, {
+      headers: clonedResponse.headers,
+      status: clonedResponse.status,
+      statusText: clonedResponse.statusText,
+    });
+  });
+}
+
 self.addEventListener('fetch', (event) => {
   // Check if this is a navigation request
   if (event.request.mode === 'navigate') {
@@ -33,7 +52,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(caches.open(cacheName).then((cache) => {
       // Go to the network first
       return fetch(event.request.url, { redirect: 'follow' }).then((fetchedResponse) => {
-        cache.put(event.request, fetchedResponse.clone());
+        cache.put(event.request, cleanResponse(fetchedResponse));
 
         return fetchedResponse;
       }).catch(() => {
