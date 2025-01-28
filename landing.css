@@ -127,6 +127,11 @@ a::after {
     min-width: 250px;
     text-align: center;
 }
+.bento > h2 {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
 .bento > p {
     margin-top: 30px;
 }
