@@ -150,6 +150,7 @@ function lowerPopup() {
 
 function activateNewLogger() {
     document.getElementById("time").value = toLocalISOString(new Date())
+    document.getElementById("invv").hidden = true
     document.getElementById("val").value = 5
     document.getElementById("formvallabel").innerText = currentCycle.label
     document.getElementById("addlog").className = "formset formalive"
@@ -158,10 +159,16 @@ function cancelNewLog() {
     document.getElementById("addlog").className = "formset"
 }
 function registerNewLog() {
-    currentCycle.registerEvent(new Event(new Date(document.getElementById("time").value), parseFloat(document.getElementById("val").value)))
-    render()
-    renderPopup(currentCycle)
-    cancelNewLog()
+    let v = parseFloat(document.getElementById("val").value)
+    if (!isNaN(v)) {
+        currentCycle.registerEvent(new Event(new Date(document.getElementById("time").value), v))
+        document.getElementById("invv").hidden = true
+        render()
+        renderPopup(currentCycle)
+        cancelNewLog()
+    } else {
+        document.getElementById("invv").hidden = false
+    }
 }
 
 function editGroup() {
