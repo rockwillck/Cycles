@@ -1,36 +1,38 @@
-const cacheName = 'v2.28';
+const cacheName = 'v2.29';
 
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(cacheName).then(cache => {
-            return cache.addAll([
-                '/',
-                '/index.html' ,
-                '/privacy.html' ,
-                '/landing.css' ,
-                '/style.css' ,
-                '/app.js' ,
-                '/register.js' ,
-                '/manifest.json',
-                '/icon.png',
-                '/icon512.png',
-                '/icon1174.png',
-                "/splashscreens/ss1.png",
-                "/splashscreens/ss2.png",
-                '/mods/analyze.js',
-                '/mods/matrix.js',
-                '/mods/structs.js',
-                '/static/Array-Regular.ttf',
-                '/static/CabinetGrotesk-Variable.ttf'
-            ]);
-        })
-    );
+  event.waitUntil(
+    async () => {
+      cache = await caches.open(cacheName);
+      await cache.addAll([
+        '/',
+        '/index.html',
+        '/privacy.html',
+        '/landing.css',
+        '/style.css',
+        '/app.js',
+        '/register.js',
+        '/manifest.json',
+        '/icon.png',
+        '/icon512.png',
+        '/icon1174.png',
+        "/splashscreens/ss1.png",
+        "/splashscreens/ss2.png",
+        '/mods/analyze.js',
+        '/mods/matrix.js',
+        '/mods/structs.js',
+        '/static/Array-Regular.ttf',
+        '/static/CabinetGrotesk-Variable.ttf'
+      ]);
+      self.skipWaiting();
+    }
+  );
 });
 
 self.addEventListener('fetch', (event) => {
   // Check if this is a navigation request
   if (event.request.mode === 'navigate') {
-    
+
     // Open the cache
     event.respondWith(caches.open(cacheName).then((cache) => {
       // Go to the network first
