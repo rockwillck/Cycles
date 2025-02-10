@@ -356,7 +356,6 @@ function getFromStorage() {
 // init
 function render() {
     analResults = getAnalysis()
-    console.log(analResults)
     document.getElementById("cycles").innerHTML = ""
     for (let key of order) {
         let cycle = cycles.get(key)

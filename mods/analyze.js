@@ -170,44 +170,100 @@ class Analyze {
             let predicted = this.calcPredict(laggedRowsI, laggedRowsT, coeff)
             let predictI = predicted[0]
             let predictT = predicted[1]
-    
-            // return [predictI, predictT]
+
             return [predictT*prepped[1][2] + prepped[1][1], predictI*prepped[0][2] + prepped[0][1]]
         } else {
             let ab = this.linearRegression(list.map((x, i) => i), this.extractDates(list))
             let a = ab[0]
             let b = ab[1]
-            return [a + b*list.length - list[list.length - 1].date, undefined,]
+            return [a + b*list.length - list[list.length - 1].date, undefined]
         }
     }
 
     // l1 and l2 are the same length
+    // static findTrend(l1, l2) {
+    //     let upCount = 0
+    //     let downCount = 0
+    //     let equalCount = 0
+    //     for (let i = 0; i < l1.length; i++) {
+    //         for (let j = i + 1; j < l1.length; j++) {
+    //             let tuple1 = [l1[i], l1[i+1]]
+    //             let tuple2 = [l2[j], l2[j+1]]
+    //             let slope = (tuple1[0] - tuple1[1])/(tuple2[0] - tuple2[1])
+    //             // slope = Math.round(slope*10)/10
+    //             if (Math.sign(slope) > 0) {
+    //                 upCount++
+    //             } else if (Math.sign(slope) < 0) {
+    //                 downCount++
+    //             } else {
+    //                 equalCount++
+    //             }
+    //         }
+    //     }
+    //     if (Math.abs(upCount - downCount)/(upCount + downCount) < 0.01) {
+    //         return 0
+    //     } else {
+    //         if (Math.max(upCount, downCount, equalCount) == upCount) {
+    //             return upCount/(upCount+downCount)
+    //         } else if (Math.max(upCount, downCount, equalCount) == downCount) {
+    //             return -downCount/(upCount+downCount)
+    //         }
+    //     }
+    //     return 0
+    // }
     static findTrend(l1, l2) {
-        let upCount = 0
-        let downCount = 0
-        let equalCount = 0
+        let range1 = [Math.min(...l1), Math.max(...l1)]
+        let range2 = [Math.min(...l2), Math.max(...l2)]
+        l1 = l1.map(x => (x - range1[0])/(range1[1] - range1[0]))
+        l2 = l2.map(x => (x - range2[0])/(range2[1] - range2[0]))
+
+        let pts = []
+        let xs = []
+        let ys = []
         for (let i = 0; i < l1.length; i++) {
-            for (let j = i + 1; j < l1.length; j++) {
-                let tuple1 = [l1[i], l1[i+1]]
-                let tuple2 = [l2[j], l2[j+1]]
-                if (Math.sign((tuple1[0] - tuple1[1])/(tuple2[0] - tuple2[1])) > 0) {
-                    upCount++
-                } else if (Math.sign((tuple1[0] - tuple1[1])/(tuple2[0] - tuple2[1])) < 0) {
-                    downCount++
+            pts.push([l1[i], l2[i]])
+            xs.push(l1[i])
+            ys.push(l2[i])
+        }
+
+        xs.sort()
+        ys.sort()
+        if (pts.length > 1) {
+            for (let j = 0; j < pts.length; j++) {
+                let pt = pts[j]
+                let xi = xs.indexOf(pt[0])
+                let yi = ys.indexOf(pt[1])
+                pts[j] = [xi * 1/(pts.length - 1), yi * 1/(pts.length - 1)]
+            }
+
+            // console.log("--")
+            // console.log(pts.map(x => `(${x[0]}, ${x[1]})`).join("\n"))
+            
+            let totalDiffPos = 0
+            let totalDiffNeg = 0
+            for (let pt of pts) {
+                totalDiffPos += (pt[1] - pt[0])**2
+                totalDiffNeg += (pt[1] - 1 + pt[0])**2
+            }
+            let uppies = 0
+            let downies = 0
+            let sp = pts.toSorted((a, b) => a[0] - b[0])
+            for (let i = 0; i < sp.length - 1; i++) {
+                if (sp[i+1][1] - sp[i][1] > 0) {
+                    uppies++
                 } else {
-                    equalCount++
+                    downies++
                 }
             }
-        }
-        if (upCount+downCount == 0) {
+            totalDiffPos /= pts.length
+            totalDiffNeg /= pts.length
+            let out = (totalDiffPos - totalDiffNeg)/(totalDiffNeg + totalDiffPos)*Math.abs((uppies-downies)/(uppies+downies))
+            if (Math.abs(out) > 0.2**2) {
+                return out
+            }
             return 0
         } else {
-            if (Math.max(upCount, downCount, equalCount) == upCount) {
-                return upCount/(upCount+downCount)
-            } else if (Math.max(upCount, downCount, equalCount) == downCount) {
-                return -downCount/(upCount+downCount)
-            }
+            return 0
         }
-        return 0
     }
 }
