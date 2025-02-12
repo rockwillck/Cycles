@@ -231,10 +231,8 @@ for (let ind = 0; ind < 3; ind++) {
             trend++
         }
     }
-    console.log(trend, trendTau)
 }
 
-console.log("--")
 let trend = 0
 let trendTau = 0
 for (let i = 0; i < 10000; i++) {
@@ -245,4 +243,3 @@ for (let i = 0; i < 10000; i++) {
     }
     trendTau += anal[1] > 0.2
 }
-console.log(trend, trendTau)

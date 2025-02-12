@@ -235,9 +235,6 @@ class Analyze {
                 let yi = ys.indexOf(pt[1])
                 pts[j] = [xi * 1/(pts.length - 1), yi * 1/(pts.length - 1)]
             }
-
-            // console.log("--")
-            // console.log(pts.map(x => `(${x[0]}, ${x[1]})`).join("\n"))
             
             let totalDiffPos = 0
             let totalDiffNeg = 0
