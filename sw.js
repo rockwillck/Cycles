@@ -1,65 +1,72 @@
-const cacheName = 'v3.0';
+const cacheName = 'v3.1';
+const assetsToCache = [
+  '/',
+  '/index.html',
+  '/privacy.html',
+  '/landing.css',
+  '/style.css',
+  '/app.js',
+  '/register.js',
+  '/manifest.json',
+  '/icon192.png',
+  '/icon512.png',
+  '/icon1174.png',
+  '/mods/analyze.js',
+  '/mods/matrix.js',
+  '/mods/structs.js',
+  '/static/Array-Regular.ttf',
+  '/static/CabinetGrotesk-Variable.ttf'
+];
 
-self.addEventListener('install', event => {
+// Install event - Pre-cache important assets
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    async () => {
-      cache = await caches.open(cacheName);
-      await cache.addAll([
-        '/',
-        '/index.html',
-        '/privacy.html',
-        '/landing.css',
-        '/style.css',
-        '/app.js',
-        '/register.js',
-        '/manifest.json',
-        '/icon.png',
-        '/icon512.png',
-        '/icon1174.png',
-        "/splashscreens/ss1.png",
-        "/splashscreens/ss2.png",
-        '/mods/analyze.js',
-        '/mods/matrix.js',
-        '/mods/structs.js',
-        '/static/Array-Regular.ttf',
-        '/static/CabinetGrotesk-Variable.ttf'
-      ]);
-      self.skipWaiting();
-    }
+    (async () => {
+      const cache = await caches.open(cacheName);
+      await cache.addAll(assetsToCache);
+      self.skipWaiting(); // Activate SW immediately
+    })()
   );
 });
 
+// Fetch event - Use network-first for navigation, cache-first for assets
 self.addEventListener('fetch', (event) => {
-  // Check if this is a navigation request
-  if (event.request.mode === 'navigate') {
+  const { request } = event;
 
-    // Open the cache
-    event.respondWith(caches.open(cacheName).then((cache) => {
-      // Go to the network first
-      return fetch(event.request.url).then((fetchedResponse) => {
-        cache.put(event.request, fetchedResponse.clone());
-
-        return fetchedResponse;
-      }).catch(() => {
-        // If the network is unavailable, get
-        return cache.match(event.request.url);
-      });
-    }));
+  if (request.mode === 'navigate') {
+    // Network-first strategy for navigation
+    event.respondWith(
+      caches.open(cacheName).then((cache) => {
+        return fetch(request).then((fetchedResponse) => {
+          cache.put(request, fetchedResponse.clone());
+          return fetchedResponse;
+        }).catch(() => cache.match(request));
+      })
+    );
   } else {
-    return;
+    // Cache-first strategy for other requests (CSS, JS, images)
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        return cachedResponse || fetch(request).then((networkResponse) => {
+          return caches.open(cacheName).then((cache) => {
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+          });
+        });
+      })
+    );
   }
 });
 
-self.addEventListener("activate", (event) => {
+// Activate event - Delete old caches
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cn) => {
-          if (cn != cacheName) {
-            return caches.delete(cn);
-          }
-        }),
-      );
-    }),
+    caches.keys().then((cacheNames) =>
+      Promise.all(
+        cacheNames
+          .filter((cn) => cn !== cacheName)
+          .map((cn) => caches.delete(cn))
+      )
+    )
   );
 });
