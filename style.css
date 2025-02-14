@@ -150,6 +150,7 @@ h3 {
     min-width: 300px;
     flex: 1;    
     margin: 10px;
+    box-sizing: border-box;
 }
 .cycle > span {
     font-size: 15px;
