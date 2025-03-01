@@ -1,245 +1,303 @@
-var groups = []
-var cycles = new Map()
+var groups = [];
+var cycles = new Map();
 
-function parseCSV(txt) {
-    let rows = txt.split("\n").map(r => r.split(","))
-    let head = rows[0]
-    let df = []
-    for (let k = 1; k < rows.length; k++) {
-        let r = {}
-        for (let i = 0; i < head.length; i++) {
-            r[head[i]] = rows[k][i]
-        }
-        df.push(r)
-    }
-    return df
+function parseCSV(text) {
+    const rows = text.split("\n").map(row => row.split(","));
+    const headers = rows[0];
+    const data = rows.slice(1).map(row => {
+        let record = {};
+        headers.forEach((header, index) => {
+            record[header] = row[index];
+        });
+        return record;
+    });
+    return data;
 }
 
-// fetch("research_data/input/KAGGLE_FedCycleData071012.csv").then(
-//     r => r.text().then(data => {
-//         let df = parseCSV(data)
-//         let groups = []
-//         let cur = ""
-//         let cg = []
-//         for (let entry of df) {
-//             if (entry.ClientID != cur) {
-//                 groups.push(cg)
-//                 cg = [entry]
-//                 cur = entry.ClientID
-//             } else {
-//                 cg.push(entry)
-//             }
-//         }
-//         groups.push(cg)
-//         let ming = groups.filter(x => x.length > 4)
-//         let outfile = ""
-//         for (let g of ming) {
-//             let group = new Group(g[0].ClientID)
-//             let evs = new Cycle(g[0].ClientID)
-//             group.registerCycle(evs)
-//             let lastDate = new Date("1/1/2000")
-//             let output = ""
-//             for (let i = 0; i < g.length - 1; i++) {
-//                 let e = g[i]
-//                 let date = lastDate
-//                 date.setDate(date.getDate() + parseInt(e.LengthofCycle))
-//                 evs.registerEvent(new Event(date, parseInt(e.TotalMensesScore)))
-//                 if (i >= 4) {
-//                     let res = group.analyze()
-//                     let pred = res.predictions[evs.id]
-//                     let act = g[i+1]
-//                     let actual = [parseInt(act.LengthofCycle)*24*60,parseInt(act.TotalMensesScore)]
-//                     if (!pred.includes(NaN) && !actual.includes(NaN)) {
-//                         output += `${pred[0]} ${pred[1]} ${actual[0]} ${actual[1]}\n`
-//                     }
-//                 }
-//             }
-//             if (output != "") {
-//                 outfile += `${g[0].ClientID}\n${output}\n`
-//             }
-//         }
-//         console.log(outfile)
-//     })
-// )
+fetch("research_data/input/KAGGLE_FedCycleData071012.csv")
+    .then(response => response.text())
+    .then(data => {
+        const records = parseCSV(data);
+        const groupedRecords = groupByClientID(records);
+        const filteredGroups = groupedRecords.filter(group => group.length > 4);
+        let outputFileContent = generateOutputFileContent(filteredGroups);
+        console.log(outputFileContent);
+    });
 
-function f(df, sfs, idti) {
+function groupByClientID(records) {
+    let groups = [];
+    let currentClientID = "";
+    let currentGroup = [];
+
+    records.forEach(record => {
+        if (record.ClientID !== currentClientID) {
+            if (currentGroup.length > 0) {
+                groups.push(currentGroup);
+            }
+            currentGroup = [record];
+            currentClientID = record.ClientID;
+        } else {
+            currentGroup.push(record);
+        }
+    });
+
+    if (currentGroup.length > 0) {
+        groups.push(currentGroup);
+    }
+
+    return groups;
+}
+
+function generateOutputFileContent(groups) {
+    let outputFileContent = "";
+
+    groups.forEach(group => {
+        const clientID = group[0].ClientID;
+        const cycle = new Cycle(clientID);
+        const groupObj = new Group(clientID);
+        groupObj.registerCycle(cycle);
+
+        let lastDate = new Date("1/1/2000");
+        let output = "";
+
+        for (let i = 0; i < group.length - 1; i++) {
+            const record = group[i];
+            const date = new Date(lastDate);
+            date.setDate(date.getDate() + parseInt(record.LengthofCycle));
+            cycle.registerEvent(new Event(date, parseInt(record.TotalMensesScore)));
+
+            if (i >= 4) {
+                const analysisResult = groupObj.analyze();
+                const predictions = analysisResult.predictions[cycle.id];
+                const nextRecord = group[i + 1];
+                const actualValues = [
+                    parseInt(nextRecord.LengthofCycle) * 24 * 60,
+                    parseInt(nextRecord.TotalMensesScore)
+                ];
+
+                if (!predictions.includes(NaN) && !actualValues.includes(NaN)) {
+                    output += `${predictions[0]} ${predictions[1]} ${actualValues[0]} ${actualValues[1]}\n`;
+                }
+            }
+        }
+
+        if (output !== "") {
+            outputFileContent += `${clientID}\n${output}\n`;
+        }
+    });
+
+    return outputFileContent;
+}
+
+function calculateIntestinalTravelTime(df, sfs, idti) {
     return 103 - 1.23 * df - 4.69 * sfs + 0.638 * idti;
 }
 
-function mean(arr) {
-    return arr.reduce((sum, val) => sum + val, 0) / arr.length;
+function calculateMean(array) {
+    return array.reduce((sum, value) => sum + value, 0) / array.length;
 }
 
-function stdDev(arr, meanVal) {
-    return Math.sqrt(arr.reduce((sum, val) => sum + (val - meanVal) ** 2, 0) / arr.length);
+function calculateStandardDeviation(array, meanValue) {
+    return Math.sqrt(array.reduce((sum, value) => sum + (value - meanValue) ** 2, 0) / array.length);
 }
 
-function gaussianRandom(mean = 0, stdDev = 1) {
-    let u1 = Math.random();
-    let u2 = Math.random();
-    let z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+function generateGaussianRandom(mean = 0, stdDev = 1) {
+    const u1 = Math.random();
+    const u2 = Math.random();
+    const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
     return mean + z * stdDev;
 }
 
-function generateYValues(data, r) {
-    let fValues = data.map(([x1, x2, x3]) => f(x1, x2, x3));
-
-    let meanF = mean(fValues);
-    let stdF = stdDev(fValues, meanF);
-
-    let sigmaE = stdF * Math.sqrt(1 - r ** 2);
-
-    let yValues = fValues.map(fx => r * fx + gaussianRandom(0, sigmaE));
-
-    return yValues;
+function generateYValues(data, correlation) {
+    const fValues = data.map(([x1, x2, x3]) => calculateIntestinalTravelTime(x1, x2, x3));
+    const meanF = calculateMean(fValues);
+    const stdF = calculateStandardDeviation(fValues, meanF);
+    const sigmaE = stdF * Math.sqrt(1 - correlation ** 2);
+    return fValues.map(fx => correlation * fx + generateGaussianRandom(0, sigmaE));
 }
 
-function correlationCoefficient(x, y) {
-    let meanX = mean(x);
-    let meanY = mean(y);
-    let stdX = stdDev(x, meanX);
-    let stdY = stdDev(y, meanY);
-
-    let covariance = x.reduce((sum, xi, i) => sum + (xi - meanX) * (y[i] - meanY), 0) / x.length;
-    
+function calculateCorrelationCoefficient(x, y) {
+    const meanX = calculateMean(x);
+    const meanY = calculateMean(y);
+    const stdX = calculateStandardDeviation(x, meanX);
+    const stdY = calculateStandardDeviation(y, meanY);
+    const covariance = x.reduce((sum, xi, i) => sum + (xi - meanX) * (y[i] - meanY), 0) / x.length;
     return covariance / (stdX * stdY);
 }
 
-function fecalAnal(ind) {
-    let data = [];
-    let fourweeks = new Array(28*24).fill(0)
-    let numpoops = 0
-    let startDate = new Date("1/1/2025")
-    let poopdates = []
-    for (let poop = 0; poop < 28*24; poop++) {
+var outputString = "";
+
+function analyzeFecalData(index) {
+    const data = [];
+    const fourWeeks = new Array(28 * 24).fill(0);
+    let numPoops = 0;
+    let startDate = new Date("1/1/2025");
+    const poopDates = [];
+
+    for (let hour = 0; hour < 28 * 24; hour++) {
         if (Math.random() < 0.3) {
-            fourweeks[poop] = Math.floor(Math.random()*6)+1
-            if (numpoops >= 3) {
-                let freq = 0
-                for (let p = Math.max(0, poop - 7*24); p < poop; p++) {
-                    if (fourweeks[p] > 0) {
-                        freq++
-                    }
-                }
-                let totalscore = 0
-                let numCounted = 0
-                let interval = 0
-                for (let hr = poop - 1; hr >= 0; hr--) {
-                    if (fourweeks[hr] > 0) {
-                        totalscore += fourweeks[hr]
-                        numCounted++
-                    }
-                    if (numCounted == 3) {
-                        interval = poop - 1 - hr
-                        break
-                    }
-                }
-                poopdates.push(new Date(+startDate))
-                data.push([freq, totalscore, interval])
+            fourWeeks[hour] = Math.floor(Math.random() * 6) + 1;
+            if (numPoops >= 3) {
+                const frequency = calculateFrequency(fourWeeks, hour);
+                const totalScore = calculateTotalScore(fourWeeks, hour);
+                const interval = calculateInterval(fourWeeks, hour);
+                poopDates.push(new Date(startDate));
+                data.push([frequency, totalScore, interval]);
             }
-            numpoops++
+            numPoops++;
         }
         startDate.setHours(startDate.getHours() + 1);
     }
 
-    // Desired correlation
-    let r = 0.736;
+    outputString += fourWeeks.join(",") + "\n";
 
-    let yValues = generateYValues(data, r);
+    const correlation = 0.736;
+    const yValues = generateYValues(data, correlation);
+    const cycle1 = new Cycle("sfs");
+    const cycle2 = new Cycle("intesttravel");
+    const group = new Group("hi");
+    group.registerCycle(cycle1);
+    group.registerCycle(cycle2);
 
-    let cyc1 = new Cycle("sfs")
-    let cyc2 = new Cycle("intesttravel")
-    let gr = new Group("hi")
-    gr.registerCycle(cyc1)
-    gr.registerCycle(cyc2)
-    let xys = []
-    for (let k = 0; k < poopdates.length; k++) {
-        let d = new Date(+poopdates[k])
-        d.setHours(d.getHours() + 1);
-        let x = data[k][ind]
-        let y = yValues[k]
-        cyc1.registerEvent(new Event(poopdates[k], x))
-        cyc2.registerEvent(new Event(d, y))
-        xys.push([x,y])
+    const xys = [];
+    poopDates.forEach((date, k) => {
+        const nextDate = new Date(date);
+        nextDate.setHours(nextDate.getHours() + 1);
+        const x = data[k][index];
+        const y = yValues[k];
+        cycle1.registerEvent(new Event(date, x));
+        cycle2.registerEvent(new Event(nextDate, y));
+        xys.push([x, y]);
+    });
+
+    const kendallTau = calculateKendallTau(xys);
+    return [group.analyze().trends[cycle1.id][0][1], kendallTau];
+}
+
+function calculateFrequency(fourWeeks, hour) {
+    let frequency = 0;
+    for (let i = Math.max(0, hour - 7 * 24); i < hour; i++) {
+        if (fourWeeks[i] > 0) {
+            frequency++;
+        }
     }
+    return frequency;
+}
 
-    // kendell tau
-    let up = 0
-    let down = 0
+function calculateTotalScore(fourWeeks, hour) {
+    let totalScore = 0;
+    let numCounted = 0;
+    for (let i = hour - 1; i >= 0; i--) {
+        if (fourWeeks[i] > 0) {
+            totalScore += fourWeeks[i];
+            numCounted++;
+        }
+        if (numCounted === 3) {
+            break;
+        }
+    }
+    return totalScore;
+}
+
+function calculateInterval(fourWeeks, hour) {
+    let interval = 0;
+    let numCounted = 0;
+    for (let i = hour - 1; i >= 0; i--) {
+        if (fourWeeks[i] > 0) {
+            numCounted++;
+        }
+        if (numCounted === 3) {
+            interval = hour - 1 - i;
+            break;
+        }
+    }
+    return interval;
+}
+
+function calculateKendallTau(xys) {
+    let concordant = 0;
+    let discordant = 0;
     for (let i = 0; i < xys.length - 1; i++) {
-        for (let j = i+1; j < xys.length; j++) {
-            let tuple1 = xys[i]
-            let tuple2 = xys[j]
-            if (Math.sign(tuple2[1] - tuple1[1]) == Math.sign(tuple2[0] - tuple1[0])) {
-                up++
+        for (let j = i + 1; j < xys.length; j++) {
+            const [x1, y1] = xys[i];
+            const [x2, y2] = xys[j];
+            if (Math.sign(y2 - y1) === Math.sign(x2 - x1)) {
+                concordant++;
             } else {
-                down++
+                discordant++;
             }
         }
     }
-
-    return [gr.analyze().trends[cyc1.id][0][1], Math.abs((up - down)/(up + down))]
-}
-function randAnal() {
-    let cyc1 = new Cycle("1")
-    let cyc2 = new Cycle("2")
-    let gr = new Group("hi2")
-    gr.registerCycle(cyc1)
-    gr.registerCycle(cyc2)
-    let curD = new Date("1/1/2000")
-    let xys = []
-    for (let k = 0; k < 30; k++) {
-        let d = new Date(+curD)
-        let x = Math.random()
-        let y = Math.random()
-        cyc1.registerEvent(new Event(d, x))
-        d.setHours(d.getHours() + 1);
-        cyc2.registerEvent(new Event(d, y))
-        d.setHours(d.getHours() + 2);
-        curD = new Date(+d)
-        xys.push([x, y])
-    }
-
-    // kendell tau
-    let up = 0
-    let down = 0
-    for (let i = 0; i < xys.length - 1; i++) {
-        for (let j = i+1; j < xys.length; j++) {
-            let tuple1 = xys[i]
-            let tuple2 = xys[j]
-            if (Math.sign(tuple2[1] - tuple1[1]) == Math.sign(tuple2[0] - tuple1[0])) {
-                up++
-            } else {
-                down++
-            }
-        }
-    }
-
-    // console.log(output)
-    return [gr.analyze().trends[cyc1.id][0][1], Math.abs((up - down)/(up + down))]
+    return Math.abs((concordant - discordant) / (concordant + discordant));
 }
 
-for (let ind = 0; ind < 3; ind++) {
-    let trend = 0
-    let trendTau = 0
+function analyzeRandomData() {
+    const cycle1 = new Cycle("1");
+    const cycle2 = new Cycle("2");
+    const group = new Group("hi2");
+    group.registerCycle(cycle1);
+    group.registerCycle(cycle2);
+
+    let currentDate = new Date("1/1/2000");
+    const xys = [];
+
+    for (let i = 0; i < 30; i++) {
+        const date = new Date(currentDate);
+        const x = Math.random();
+        const y = Math.random();
+        cycle1.registerEvent(new Event(date, x));
+        date.setHours(date.getHours() + 1);
+        cycle2.registerEvent(new Event(date, y));
+        date.setHours(date.getHours() + 2);
+        currentDate = new Date(date);
+        xys.push([x, y]);
+        outputString += `${x},${y}\n`;
+    }
+
+    const kendallTau = calculateKendallTau(xys);
+    return [group.analyze().trends[cycle1.id][0][1], kendallTau];
+}
+
+function downloadFile(filename, text) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+let outputOutputString = "";
+for (let index = 0; index < 3; index++) {
+    outputOutputString = "";
+    let trendCount = 0;
+    let trendTauCount = 0;
     for (let i = 0; i < 10000; i++) {
-        let anal = fecalAnal(ind)
-        let coeff = anal[0]["ii1"]
-        let tau = anal[1]
-        trendTau += tau > 0.3
-        if (coeff != 0) {
-            trend++
+        const analysis = analyzeFecalData(index);
+        outputOutputString += outputString + "\n";
+        outputString = "";
+        const coefficient = analysis[0]["ii1"];
+        const tau = analysis[1];
+        trendTauCount += tau > 0.3;
+        if (coefficient !== 0) {
+            trendCount++;
         }
     }
+    console.log("prepping file");
+    downloadFile(`${index}-defec.txt`, outputOutputString);
 }
 
-let trend = 0
-let trendTau = 0
+let trendCount = 0;
+let trendTauCount = 0;
 for (let i = 0; i < 10000; i++) {
-    let anal = randAnal()
-    let coeff = anal[0]["ii1"]
-    if (coeff != 0) {
-        trend++
+    const analysis = analyzeRandomData();
+    const coefficient = analysis[0]["ii1"];
+    if (coefficient !== 0) {
+        trendCount++;
     }
-    trendTau += anal[1] > 0.2
+    trendTauCount += analysis[1] > 0.2;
+    outputString += "\n";
 }
+console.log("prepping file");
+downloadFile(`rand.txt`, outputString);

@@ -1,5 +1,4 @@
 class Analyze {
-
     // https://stackoverflow.com/questions/7343890/standard-deviation-javascript
     static getStandardDeviation (array) {
         let n = array.length
@@ -60,7 +59,6 @@ class Analyze {
     }
 
     static intensityToIntensity(l1, l2) {
-        // per event in l2, leading up
         return this.findTrend(this.groupTotalIntensitiesByTime(l1, l2), this.extractDates(l2))
     }
     static frequencyToIntensity(l1, l2) {
@@ -180,37 +178,6 @@ class Analyze {
         }
     }
 
-    // l1 and l2 are the same length
-    // static findTrend(l1, l2) {
-    //     let upCount = 0
-    //     let downCount = 0
-    //     let equalCount = 0
-    //     for (let i = 0; i < l1.length; i++) {
-    //         for (let j = i + 1; j < l1.length; j++) {
-    //             let tuple1 = [l1[i], l1[i+1]]
-    //             let tuple2 = [l2[j], l2[j+1]]
-    //             let slope = (tuple1[0] - tuple1[1])/(tuple2[0] - tuple2[1])
-    //             // slope = Math.round(slope*10)/10
-    //             if (Math.sign(slope) > 0) {
-    //                 upCount++
-    //             } else if (Math.sign(slope) < 0) {
-    //                 downCount++
-    //             } else {
-    //                 equalCount++
-    //             }
-    //         }
-    //     }
-    //     if (Math.abs(upCount - downCount)/(upCount + downCount) < 0.01) {
-    //         return 0
-    //     } else {
-    //         if (Math.max(upCount, downCount, equalCount) == upCount) {
-    //             return upCount/(upCount+downCount)
-    //         } else if (Math.max(upCount, downCount, equalCount) == downCount) {
-    //             return -downCount/(upCount+downCount)
-    //         }
-    //     }
-    //     return 0
-    // }
     static findTrend(l1, l2) {
         let range1 = [Math.min(...l1), Math.max(...l1)]
         let range2 = [Math.min(...l2), Math.max(...l2)]

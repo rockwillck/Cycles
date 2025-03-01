@@ -3,7 +3,7 @@
     "short_name": "Cycles",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#098672FF",
+    "background_color": "#098672F",
     "description": "Body awareness, elevated.",
     "icons": [
         {
