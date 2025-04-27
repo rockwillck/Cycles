@@ -432,8 +432,8 @@ let draggedElement = null;
 
 // Event listeners for drag events
 container.addEventListener("dragstart", (e) => {
-    if (e.target.classList.contains("cycle")) {
-        draggedElement = e.target;
+    if (e.target.closest(".cycle")) {
+        draggedElement = e.target.closest(".cycle");
     }
 });
 
@@ -446,9 +446,9 @@ container.addEventListener("dragover", (e) => {
     e.preventDefault(); // Allow dropping
     const afterElement = getDragAfterElement(container, e.clientX, e.clientY);
     if (afterElement == null) {
-    container.appendChild(draggedElement);
+        container.appendChild(draggedElement);
     } else {
-    container.insertBefore(draggedElement, afterElement);
+        container.insertBefore(draggedElement, afterElement);
     }
 });
 
@@ -460,8 +460,9 @@ container.addEventListener("touchstart", (e) => {
     currentTouchId = setInterval(() => {
         touchLength++
     }, 10)
-    if (target.classList.contains("cycle")) {
-        draggedElement = target;
+    if (target.closest(".cycle")) {
+        draggedElement = target.closest(".cycle");
+        draggedElement.style.opacity = 0.5
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
     }
@@ -482,6 +483,7 @@ container.addEventListener("touchmove", (e) => {
 
 container.addEventListener("touchend", () => {
     if (draggedElement) {
+        draggedElement.style.opacity = ""
         draggedElement = null;
     }
     order = [...document.getElementById("cycles").children].map(x => x.dataset.id)
