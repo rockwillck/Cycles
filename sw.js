@@ -1,4 +1,4 @@
-const cacheName = 'v3.2.2';
+const cacheName = 'v3.2.3';
 const assetsToCache = [
   '/',
   '/index.html',
