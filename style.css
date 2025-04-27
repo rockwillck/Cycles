@@ -53,18 +53,21 @@ body {
     left: 0;
     top: 0;
     width: 100vw;
-    height: 100%;
 }
 .bg {
-    background-size:100vmax 100vmax;
+    filter: blur(4vmin) brightness(0.5);
+    height: 100vh;
+    background-size: 100vmax 100vmax;
     background-position: center;
     background-image: radial-gradient(40% 40% at 73% 14%, rgb(229, 27, 97) 19%, #073AFF00 59%),radial-gradient(40% 40% at 96% 70%, rgb(252, 29, 185) 25%, #073AFF00 56%),radial-gradient(40% 40% at 93% 8%, rgb(219, 75, 161) 25%, #073AFF00 62%),radial-gradient(40% 40% at 63% -1%, rgb(245, 16, 214) 25%, #073AFF00 62%),radial-gradient(40% 40% at 103% 84%, rgb(225, 59, 197) 25%, #073AFF00 75%),radial-gradient(40% 40% at 97% 96%, rgb(255, 0, 195) 25%, #073AFF00 74%),radial-gradient(40% 40% at 81% 79%, rgb(255, 0, 102) 25%, #073AFF00 65%),radial-gradient(40% 40% at 2% 59%, rgb(139, 23, 110) 25%, #073AFF00 70%),radial-gradient(40% 40% at 31% 103%, rgb(139, 23, 102) 25%, #073AFF00 70%),radial-gradient(40% 40% at 10% 98%, rgb(134, 9, 61) 25%, #073AFF00 68%),radial-gradient(40% 40% at 9% 76%, rgb(185, 58, 185) 25%, #073AFF00 68%);
+}
+.screen {
+    height: 100%;
 }
 .chillbg {
     background-image: radial-gradient(40% 40% at 73% 14%, #2EA398FF 19%, #073AFF00 59%),radial-gradient(40% 40% at 96% 70%, #3CCB9EFF 25%, #073AFF00 56%),radial-gradient(40% 40% at 93% 8%, #3796A3FF 25%, #073AFF00 62%),radial-gradient(40% 40% at 63% -1%, #22CFADFF 25%, #073AFF00 62%),radial-gradient(40% 40% at 103% 84%, #3BE1B3FF 25%, #073AFF00 75%),radial-gradient(40% 40% at 97% 96%, #00FFD4FF 25%, #073AFF00 74%),radial-gradient(40% 40% at 81% 79%, #00FFBDFF 25%, #073AFF00 65%),radial-gradient(40% 40% at 2% 59%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 31% 103%, #17798BFF 25%, #073AFF00 70%),radial-gradient(40% 40% at 10% 98%, #098672FF 25%, #073AFF00 68%),radial-gradient(40% 40% at 9% 76%, #3AB989FF 25%, #073AFF00 68%);;
 }
 .screen {
-    backdrop-filter: blur(4vmin) brightness(0.5);
     padding: 30px;
     box-sizing: border-box;
     overflow: scroll;
