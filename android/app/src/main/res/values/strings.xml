@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Cycles</string>
+    <string name="title_activity_main">Cycles</string>
+    <string name="package_name">com.trackyourcycles.app</string>
+    <string name="custom_url_scheme">com.trackyourcycles.app</string>
+</resources>

@@ -54,19 +54,26 @@ h1, h2, h3 {
 h1 {
 	font-size: 80px;
 }
-h1, sub, .hero > a {
+h1, sub, .hero > a , .hero > #bth{
 	opacity: 0;
 	animation: risingText 2s forwards;
 }
-a {
+a, #bth {
     margin-top: 20px;
     color: black;
     background-color: white;
     padding: 10px 20px;
     border-radius: 100vmin;
+	font-family: inherit;
+	font-size: inherit;
+	border: none;
 }
 a::after {
     content: none;
+}
+
+#bth {
+	text-transform: uppercase;
 }
 
 @keyframes rising {

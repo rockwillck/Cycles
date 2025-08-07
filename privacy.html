@@ -7,7 +7,7 @@
 	<meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover, user-scalable=no" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="description" content="Body awareness, elevated." />
-	<link rel="stylesheet" type="text/css" href="/style.css" />
+	<link rel="stylesheet" type="text/css" href="dist/style.css" />
     <link rel="stylesheet" type="text/css" href="/landing.css">
 	<link rel="icon" href="/icon.png">
 	<link rel="manifest" href="/manifest.json">
@@ -32,7 +32,7 @@
     <div class="heroBlurrer"></div>
 	<div class="hero">
         <h1 class="title">Privacy Policy</h1>
-        <a href="landing" id="bth">Back to Home</a>
+        <button href="landing" id="bth">Back to Home</a>
     </div>
     <div class="content">
         <h2>Who We Are</h2>
@@ -52,7 +52,12 @@
     <script>
         if (window.location.href.endsWith("?inapp=true"))  {
             document.getElementById("bth").innerText = "Back to Cycles"
-            document.getElementById("bth").href = "/"
+            document.getElementById("bth").onclick = () => {history.back()}
+        } else if (window.location.href.endsWith("?home=true")) {
+            document.getElementById("bth").onclick = () => {window.location.href = "/"}
+        } else {
+            document.getElementById("bth").innerText = "Back to Cycles"
+            document.getElementById("bth").onclick = () => {window.location.href = "/dist/index.html"}
         }
     </script>
 </body>
