@@ -2,27 +2,6 @@
     --pwa-top-offset: 0px;
 }
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    transition: 0.2s;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.4);
-}
-
 html,
 body {
     overscroll-behavior-y: none;
